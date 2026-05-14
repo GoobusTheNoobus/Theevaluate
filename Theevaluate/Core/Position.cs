@@ -5,8 +5,8 @@ using U64 = ulong;
 
 public class Position
 {
-    private static char[] PieceCharacters = ['P', 'N', 'B', 'R', 'Q', 'K', 'p', 'n', 'b', 'r', 'q', 'k', '.'];
-    public static string StartingPositionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    private static readonly char[] PieceCharacters = ['P', 'N', 'B', 'R', 'Q', 'K', 'p', 'n', 'b', 'r', 'q', 'k', '.'];
+    public static readonly string StartingPositionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     // Board representations
     private Piece[] pieces       = new Piece[(int)Square.NB];
