@@ -4,8 +4,6 @@ using Theevaluate.Core.Board;
 
 static class MoveGen
 {
-    private static ulong DoNothing() { return long.MaxValue; }
-
     public static void GeneratePseudoLegalMoves(ref Position pos, ref MoveList moves)
     {
         GeneratePawnMoves(ref pos, ref moves);
@@ -14,7 +12,6 @@ static class MoveGen
         GenerateRookMoves(ref pos, ref moves);
         GenerateQueenMoves(ref pos, ref moves);
         GenerateKingMoves(ref pos, ref moves);
-
     }
 
     private static void GeneratePawnMoves(ref Position pos, ref MoveList moves)
@@ -36,7 +33,6 @@ static class MoveGen
         int rightCaptureDir = isWhite ? 9: -7;
 
         // Bitboards
-
         ulong singlePushBB = (isWhite ? pawns << 8: pawns >> 8) & ~occ;
         ulong doublePushBB = (isWhite ? (singlePushBB & rank3FromBottom) << 8: (singlePushBB & rank3FromBottom) >> 8) & ~occ;
         ulong leftBB       = (isWhite ? (pawns & ~Bitboards.FileMasks[(int)File.A]) << 7: (pawns & ~Bitboards.FileMasks[(int)File.A]) >> 9) & enemy;
@@ -64,10 +60,8 @@ static class MoveGen
         if (enPassantSquare != Square.None)
         {
             ulong enPassantPawns = pawns & Bitboards.GetPawnAttacks(enPassantSquare, them);
-
             ExtractEP(ref moves, ref enPassantPawns, enPassantSquare);
         }
-
     }
 
     private static void GenerateKnightMoves(ref Position pos, ref MoveList moves)
@@ -181,28 +175,25 @@ static class MoveGen
         if (isWhite)
         {
             if (pos.HasCastlingRights(Castling.WhiteKingside) && (occ & Castling.WhiteKingsideBetweenSquares) == 0)
-                moves.Add(Move.Make(from, ksTo, Move.Castling));
+                moves.Add(Move.New(from, ksTo, Move.Castling));
             if (pos.HasCastlingRights(Castling.WhiteQueenside) && (occ & Castling.WhiteQueensideBetweenSquares) == 0)
-                moves.Add(Move.Make(from, qsTo, Move.Castling));
+                moves.Add(Move.New(from, qsTo, Move.Castling));
         } else
         {
             if (pos.HasCastlingRights(Castling.BlackKingside) && (occ & Castling.BlackKingsideBetweenSquares) == 0)
-                moves.Add(Move.Make(from, ksTo, Move.Castling));
+                moves.Add(Move.New(from, ksTo, Move.Castling));
             if (pos.HasCastlingRights(Castling.BlackQueenside) && (occ & Castling.BlackQueenside) == 0)
-                moves.Add(Move.Make(from, qsTo, Move.Castling));
+                moves.Add(Move.New(from, qsTo, Move.Castling));
         }
-        
-        
     }
 
     // Helpers
-
     private static void ExtractPawn(ref MoveList moves, ref ulong bb, int offset, byte flag)
     {
         while (bb != 0)
         {
             int lsb = Bitboards.PopLsb(ref bb);
-            moves.Add(Move.Make((Square)(lsb - offset), (Square)lsb, flag));
+            moves.Add(Move.New((Square)(lsb - offset), (Square)lsb, flag));
         }
     }
 
@@ -212,7 +203,7 @@ static class MoveGen
         {
             int lsb = Bitboards.PopLsb(ref bb);
 
-            ushort baseMove = Move.Make((Square)(lsb - offset), (Square)lsb, Move.Normal);
+            ushort baseMove = Move.New((Square)(lsb - offset), (Square)lsb, Move.Normal);
             moves.Add(Move.WithFlag(baseMove, Move.NPromo));
             moves.Add(Move.WithFlag(baseMove, Move.BPromo));
             moves.Add(Move.WithFlag(baseMove, Move.RPromo));
@@ -226,7 +217,7 @@ static class MoveGen
         while (bb != 0)
         {
             int lsb = Bitboards.PopLsb(ref bb);
-            moves.Add(Move.Make((Square)lsb, to, Move.EnPassant));
+            moves.Add(Move.New((Square)lsb, to, Move.EnPassant));
         }
     }
 
@@ -235,7 +226,7 @@ static class MoveGen
         while (bb != 0)
         {
             int lsb = Bitboards.PopLsb(ref bb);
-            moves.Add(Move.Make(from, (Square)lsb, Move.Normal));
+            moves.Add(Move.New(from, (Square)lsb, Move.Normal));
         }
     }
 }

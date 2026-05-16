@@ -3,10 +3,8 @@ namespace Theevaluate.Core.Board;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-
 static class Bitboards 
 {
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int PopLsb(ref ulong bb) 
     {
@@ -15,8 +13,6 @@ static class Bitboards
 
         return lsb;
     }
-
-    // ========================== Tables and Arrays ==========================
 
     public static readonly ulong[] FileMasks = [
         0x0101010101010101UL,
@@ -254,7 +250,7 @@ static class Bitboards
     private static readonly (int r, int f)[] bishopVectors = [(1, 1), (1, -1), (-1, 1), (-1, -1)];
     private static readonly (int r, int f)[] rookVectors = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
-    // Helper
+    // Helper function for raycasting
     private static bool OutOfBounds(Rank x, File y) { return x > Rank.R8 || x < Rank.R1 || y > File.H || y < File.A; }
 
     private static ulong RaycastBishop(Square square, ulong blockers) 
@@ -274,13 +270,11 @@ static class Bitboards
                 if (OutOfBounds(newr, newf)) break;
 
                 Square newsquare = TypeUtil.MakeSquare(newr, newf);
-
                 mask |= SquareMasks[(int)newsquare];
 
                 if ((blockers & SquareMasks[(int)newsquare]) != 0) break;
             }
         }
-
         return mask;
     }
 
@@ -301,13 +295,11 @@ static class Bitboards
                 if (OutOfBounds(newr, newf)) break;
 
                 Square newsquare = TypeUtil.MakeSquare(newr, newf);
-
                 mask |= SquareMasks[(int)newsquare];
 
                 if ((blockers & SquareMasks[(int)newsquare]) != 0) break;
             }
         }
-
         return mask;
     }
 
@@ -343,7 +335,7 @@ static class Bitboards
         #endif
     }
 
-    private static ulong GenBlocker(int i, ulong mask) 
+    private static ulong GenerateBlocker(int i, ulong mask) 
     {
         ulong blocker = 0;
         int n = 0;
@@ -355,24 +347,21 @@ static class Bitboards
             if (((ulong)i & SquareMasks[(int)n]) != 0) blocker |= SquareMasks[square];
             ++n;
         }
-
         return blocker;
     }
 
     static Bitboards() 
     {
-
         for (Square square = Square.A1; square <= Square.H8; ++square) 
         {
             for (int i = 0; i < (1 << BishopRelevancies[(int)square]); ++i) 
             {
-                ulong blockers = GenBlocker(i, BishopMasks[(int)square]);
+                ulong blockers = GenerateBlocker(i, BishopMasks[(int)square]);
                 BishopAttacks[BishopOffsets[(int)square] + HashBishop(square, blockers)] = RaycastBishop(square, blockers);
             }
-
             for (int i = 0; i < (1 << RookRelevancies[(int)square]); ++i) 
             {
-                ulong blockers = GenBlocker(i, RookMasks[(int)square]);
+                ulong blockers = GenerateBlocker(i, RookMasks[(int)square]);
                 RookAttacks[RookOffsets[(int)square] + HashRook(square, blockers)] = RaycastRook(square, blockers);
             }
         }

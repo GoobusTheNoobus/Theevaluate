@@ -8,8 +8,7 @@ namespace Theevaluate.Benchmarks;
 
 public static class MoveGenBenchmark
 {
-    private static readonly string[] BenchmarkFens =
-    [
+    private static readonly string[] BenchmarkFens = [
         Position.StartingPositionFEN,
         "rnbqk1nr/ppp1bppp/3p4/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 0 1",
         "rnbqk2r/ppp2ppp/4pn2/3p4/2PP4/P1b5/1P1BPPPP/R2QKBNR w KQkq - 0 1",

@@ -33,6 +33,9 @@ public enum PieceType: byte { Pawn, Knight, Bishop, Rook, Queen, King }
 
 public class Castling 
 {
+    public static byte White = 3;
+    public static byte Black = 12;
+
     public static byte WhiteKingside  = 1;
     public static byte WhiteQueenside = 2;
     public static byte BlackKingside  = 4;

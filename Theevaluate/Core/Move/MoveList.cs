@@ -1,4 +1,5 @@
 using System.Text;
+using Theevaluate.Core.Board;
 
 namespace Theevaluate.Core.Move;
 
@@ -14,8 +15,16 @@ public ref struct MoveList
         data = buff;
     }
 
+    public MoveList(Span<ushort> buff, ref Position pos)
+    {
+        count = 0;
+        data = buff;
+
+        MoveGen.GeneratePseudoLegalMoves(ref pos, ref this);
+    }
+
     public void Add(ushort move) { data[count++] = move; }
-    public ushort Get(int i) => data[i];
+    public readonly ushort Get(int i) { return data[i]; }
     public void Clear() { count = 0; }
     public void Swap(int i1, int i2) 
     {
@@ -31,7 +40,6 @@ public ref struct MoveList
             sb.Append(Move.ToString(data[i]));
             sb.Append(",\n");
         }
-
         sb.Append("Size: " + count);
 
         return sb.ToString();

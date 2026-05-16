@@ -1,11 +1,15 @@
+using System.Reflection.Metadata;
+
 namespace Theevaluate.Core.Move;
 
 public static class Move
 {
     private static readonly char[] PromoCharacters = ['n', 'b', 'r', 'q'];
 
+    private const int FromShift = 0;
     private const int ToShift = 6;
     private const int FlagShift = 12;
+
     private const ushort SquareMask = 0x3F;
     private const ushort MoveMaskWithoutFlag = 0x0FFF;
     private const byte FlagMask = 0x7;
@@ -19,10 +23,10 @@ public static class Move
                       RPromo = 6,
                       QPromo = 7;
 
-    public static ushort Make(Square from, Square to, byte flag = Normal)
+    public static ushort New(Square from, Square to, byte flag = Normal)
     {
         return (ushort)(
-            ((ushort)from & SquareMask) |
+            (((ushort)from & SquareMask) << FromShift) |
             ((((ushort)to) & SquareMask) << ToShift) |
             ((((ushort)flag) & FlagMask) << FlagShift)
         );
