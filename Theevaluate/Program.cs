@@ -1,18 +1,14 @@
 ﻿using System;
-using Theevaluate.Core;
+using Theevaluate.Benchmarks;
 
-namespace Theevaluate
-{
+namespace Theevaluate;
+
 class Program
 {
     static void Main(string[] args)
     {
-        Position pos = new Position();
-
-        pos.ParseFEN(Position.StartingPositionFEN);
-
-        Console.WriteLine(pos);
+        MoveGenBenchmark.Run();
     }
-}  
 
-} // namespace Theevaluate
+    
+}

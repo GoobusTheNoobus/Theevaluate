@@ -1,15 +1,14 @@
-namespace Theevaluate.Core;
+namespace Theevaluate.Core.Board;
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-using U64 = ulong;
 
-class Bitboards
+static class Bitboards 
 {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int PopLsb(ref U64 bb)
+    public static int PopLsb(ref ulong bb) 
     {
         int lsb = BitOperations.TrailingZeroCount(bb);
         bb &= bb - 1;
@@ -19,7 +18,7 @@ class Bitboards
 
     // ========================== Tables and Arrays ==========================
 
-    private static readonly U64[] FileMasks = [
+    public static readonly ulong[] FileMasks = [
         0x0101010101010101UL,
         0x0202020202020202UL,
         0x0404040404040404UL,
@@ -30,7 +29,7 @@ class Bitboards
         0x8080808080808080UL,
     ];
 
-    private static readonly U64[] RankMasks = [
+    public static readonly ulong[] RankMasks = [
         0xFFUL,
         0xFF00UL,
         0xFF0000UL,
@@ -41,7 +40,7 @@ class Bitboards
         0xFF00000000000000UL,
     ];
 
-    private static readonly U64[] SquareMasks = [
+    public static readonly ulong[] SquareMasks = [
         1UL <<  0, 1UL <<  1, 1UL <<  2, 1UL <<  3, 1UL <<  4, 1UL <<  5, 1UL <<  6, 1UL <<  7,
         1UL <<  8, 1UL <<  9, 1UL << 10, 1UL << 11, 1UL << 12, 1UL << 13, 1UL << 14, 1UL << 15,
         1UL << 16, 1UL << 17, 1UL << 18, 1UL << 19, 1UL << 20, 1UL << 21, 1UL << 22, 1UL << 23,
@@ -52,7 +51,7 @@ class Bitboards
         1UL << 56, 1UL << 57, 1UL << 58, 1UL << 59, 1UL << 60, 1UL << 61, 1UL << 62, 1UL << 63,
     ];
 
-    private static readonly U64[] KnightAttacks = [
+    private static readonly ulong[] KnightAttacks = [
         0x0000000000020400UL, 0x0000000000050800UL, 0x00000000000A1100UL, 0x0000000000142200UL,
         0x0000000000284400UL, 0x0000000000508800UL, 0x0000000000A01000UL, 0x0000000000402000UL,
         0x0000000002040004UL, 0x0000000005080008UL, 0x000000000A110011UL, 0x0000000014220022UL,
@@ -71,7 +70,7 @@ class Bitboards
         0x0044280000000000UL, 0x0088500000000000UL, 0x0010A00000000000UL, 0x0020400000000000UL,
     ];
 
-    private static readonly U64[] KingAttacks = [
+    private static readonly ulong[] KingAttacks = [
         0x0000000000000302UL, 0x0000000000000705UL, 0x0000000000000E0AUL, 0x0000000000001C14UL,
         0x0000000000003828UL, 0x0000000000007050UL, 0x000000000000E0A0UL, 0x000000000000C040UL,
         0x0000000000030203UL, 0x0000000000070507UL, 0x00000000000E0A0EUL, 0x00000000001C141CUL,
@@ -90,7 +89,7 @@ class Bitboards
         0x2838000000000000UL, 0x5070000000000000UL, 0xA0E0000000000000UL, 0x40C0000000000000UL,
     ];
 
-    private static readonly U64[][] PawnAttacks = [
+    private static readonly ulong[][] PawnAttacks = [
     [
         0x0000000000000200UL, 0x0000000000000500UL, 0x0000000000000A00UL, 0x0000000000001400UL,
         0x0000000000002800UL, 0x0000000000005000UL, 0x000000000000A000UL, 0x0000000000004000UL,
@@ -129,7 +128,7 @@ class Bitboards
     ]
     ];
 
-    private static readonly U64[] BishopMasks = [
+    private static readonly ulong[] BishopMasks = [
         0x0040201008040200UL, 0x0000402010080400UL, 0x0000004020100A00UL, 0x0000000040221400UL,
         0x0000000002442800UL, 0x0000000204085000UL, 0x0000020408102000UL, 0x0002040810204000UL,
         0x0020100804020000UL, 0x0040201008040000UL, 0x00004020100A0000UL, 0x0000004022140000UL,
@@ -148,7 +147,7 @@ class Bitboards
         0x0028440200000000UL, 0x0050080402000000UL, 0x0020100804020000UL, 0x0040201008040200UL,
     ];
 
-    private static readonly U64[] RookMasks = [
+    private static readonly ulong[] RookMasks = [
         0x000101010101017EUL, 0x000202020202027CUL, 0x000404040404047AUL, 0x0008080808080876UL,
         0x001010101010106EUL, 0x002020202020205EUL, 0x004040404040403EUL, 0x008080808080807EUL,
         0x0001010101017E00UL, 0x0002020202027C00UL, 0x0004040404047A00UL, 0x0008080808087600UL,
@@ -167,7 +166,7 @@ class Bitboards
         0x6E10101010101000UL, 0x5E20202020202000UL, 0x3E40404040404000UL, 0x7E80808080808000UL,
     ];
 
-    private static readonly U64[] BishopMagics = [
+    private static readonly ulong[] BishopMagics = [
         0x89A1121896040240UL, 0x2004844802002010UL, 0x2068080051921000UL, 0x62880A0220200808UL,
         0x0004042004000000UL, 0x0100822020200011UL, 0xC00444222012000AUL, 0x0028808801216001UL,
         0x0400492088408100UL, 0x0201C401040C0084UL, 0x0840800910A00010UL, 0x0000082080240060UL,
@@ -186,7 +185,7 @@ class Bitboards
         0x0001000042304105UL, 0x0010008830412A00UL, 0x2520081090008908UL, 0x40102000A0A60140UL,
     ];
 
-    private static readonly U64[] RookMagics = [
+    private static readonly ulong[] RookMagics = [
         0x0A8002C000108020UL, 0x06C00049B0002001UL, 0x0100200010090040UL, 0x2480041000800801UL,
         0x0280028004000800UL, 0x0900410008040022UL, 0x0280020001001080UL, 0x2880002041000080UL,
         0xA000800080400034UL, 0x0004808020004000UL, 0x2290802004801000UL, 0x0411000D00100020UL,
@@ -228,9 +227,9 @@ class Bitboards
     ];
 
     private static readonly int[] BishopOffsets = [
-        0,   64,   96,  128,  160,  192,  224,  256,
-        320,  352,  384,  416,  448,  480,  512,  544,
-        576,  608,  640,  768,  896, 1024, 1152, 1184,
+           0,   64,   96,  128,  160,  192,  224,  256,
+         320,  352,  384,  416,  448,  480,  512,  544,
+         576,  608,  640,  768,  896, 1024, 1152, 1184,
         1216, 1248, 1280, 1408, 1920, 2432, 2560, 2592,
         2624, 2656, 2688, 2816, 3328, 3840, 3968, 4000,
         4032, 4064, 4096, 4224, 4352, 4480, 4608, 4640,
@@ -249,8 +248,8 @@ class Bitboards
         81920, 86016, 88064, 90112, 92160, 94208, 96256, 98304,
     ];
 
-    private static U64[] BishopAttacks = new U64[5248];
-    private static U64[] RookAttacks = new U64[102400];
+    private static readonly ulong[] BishopAttacks = new ulong[5248];
+    private static readonly ulong[] RookAttacks = new ulong[102400];
 
     private static readonly (int r, int f)[] bishopVectors = [(1, 1), (1, -1), (-1, 1), (-1, -1)];
     private static readonly (int r, int f)[] rookVectors = [(1, 0), (-1, 0), (0, 1), (0, -1)];
@@ -258,14 +257,14 @@ class Bitboards
     // Helper
     private static bool OutOfBounds(Rank x, File y) { return x > Rank.R8 || x < Rank.R1 || y > File.H || y < File.A; }
 
-    private static U64 RaycastBishop(Square square, U64 blockers)
+    private static ulong RaycastBishop(Square square, ulong blockers) 
     {
-        U64 mask = 0;
+        ulong mask = 0;
 
         Rank r = TypeUtil.RankOf(square);
         File f = TypeUtil.FileOf(square);
 
-        foreach ((int x, int y) vector in bishopVectors)
+        foreach ((int x, int y) vector in bishopVectors) 
         {
             for (int i = 1; i <= 7; ++i)
             {
@@ -285,16 +284,16 @@ class Bitboards
         return mask;
     }
 
-    private static U64 RaycastRook(Square square, U64 blockers)
+    private static ulong RaycastRook(Square square, ulong blockers) 
     {
-        U64 mask = 0;
+        ulong mask = 0;
 
         Rank r = TypeUtil.RankOf(square);
         File f = TypeUtil.FileOf(square);
 
-        foreach ((int x, int y) vector in rookVectors)
+        foreach ((int x, int y) vector in rookVectors) 
         {
-            for (int i = 1; i <= 7; ++i)
+            for (int i = 1; i <= 7; ++i) 
             {
                 Rank newr = (Rank)((int)r + (vector.x * i));
                 File newf = (File)((int)f + (vector.y * i));
@@ -312,71 +311,80 @@ class Bitboards
         return mask;
     }
 
-    private static int HashBishop(Square square, U64 blockers)
+    private static int HashBishop(Square square, ulong blockers) 
     {
-#if BMI2
-        return (int)Bmi2.X64.ParallelBitExtract(
-            blockers,
-            BishopMasks[(int)square]
-        );
-#else
-        return (int)(
-            ((blockers & BishopMasks[(int)square]) *
-            BishopMagics[(int)square])
-            >> (64 - BishopRelevancies[(int)square])
-        );
-#endif
+        #if BMI2
+            return (int)Bmi2.X64.ParallelBitExtract(
+                blockers,
+                BishopMasks[(int)square]
+            );
+        #else
+            return (int)(
+                ((blockers & BishopMasks[(int)square]) *
+                BishopMagics[(int)square])
+                >> (64 - BishopRelevancies[(int)square])
+            );
+        #endif
     }
 
-    private static int HashRook(Square square, ulong blockers)
+    private static int HashRook(Square square, ulong blockers) 
     {
-#if BMI2
-        return (int)Bmi2.X64.ParallelBitExtract(
-            blockers,
-            RookMasks[(int)square]
-        );
-#else
-        return (int)(
-            ((blockers & RookMasks[(int)square]) *
-            RookMagics[(int)square])
-            >> (64 - RookRelevancies[(int)square])
-        );
-#endif
+        #if BMI2
+            return (int)Bmi2.X64.ParallelBitExtract(
+                blockers,
+                RookMasks[(int)square]
+            );
+        #else
+            return (int)(
+                ((blockers & RookMasks[(int)square]) *
+                RookMagics[(int)square])
+                >> (64 - RookRelevancies[(int)square])
+            );
+        #endif
     }
 
-    private static U64 GenBlocker(int i, U64 mask)
+    private static ulong GenBlocker(int i, ulong mask) 
     {
-        U64 blocker = 0;
+        ulong blocker = 0;
         int n = 0;
 
-        while (mask != 0)
+        while (mask != 0) 
         {
             int square = PopLsb(ref mask);
 
-            if (((U64)i & SquareMasks[(int)n]) != 0) blocker |= SquareMasks[square];
+            if (((ulong)i & SquareMasks[(int)n]) != 0) blocker |= SquareMasks[square];
             ++n;
         }
 
         return blocker;
     }
 
-    public static void Initialize()
+    static Bitboards() 
     {
 
-        for (Square square = Square.A1; square <= Square.H8; ++square)
+        for (Square square = Square.A1; square <= Square.H8; ++square) 
         {
-            for (int i = 0; i < (1 << BishopRelevancies[(int)square]); ++i)
+            for (int i = 0; i < (1 << BishopRelevancies[(int)square]); ++i) 
             {
-                U64 blockers = GenBlocker(i, BishopMasks[(int)square]);
+                ulong blockers = GenBlocker(i, BishopMasks[(int)square]);
                 BishopAttacks[BishopOffsets[(int)square] + HashBishop(square, blockers)] = RaycastBishop(square, blockers);
             }
 
-            for (int i = 0; i < (1 << RookRelevancies[(int)square]); ++i)
+            for (int i = 0; i < (1 << RookRelevancies[(int)square]); ++i) 
             {
-                U64 blockers = GenBlocker(i, RookMasks[(int)square]);
-                RookAttacks[BishopOffsets[(int)square] + HashRook(square, blockers)] = RaycastRook(square, blockers);
+                ulong blockers = GenBlocker(i, RookMasks[(int)square]);
+                RookAttacks[RookOffsets[(int)square] + HashRook(square, blockers)] = RaycastRook(square, blockers);
             }
         }
     }
+
+    // Public access functions
+
+    public static ulong GetKnightAttacks(Square square) { return KnightAttacks[(int)square]; }
+    public static ulong GetKingAttacks(Square square) { return KingAttacks[(int)square]; }
+    public static ulong GetPawnAttacks(Square square, Color color) { return PawnAttacks[(int)color][(int)square]; }
+    public static ulong GetBishopAttacks(Square square, ulong occ) { return BishopAttacks[BishopOffsets[(int)square] + HashBishop(square, occ)]; }
+    public static ulong GetRookAttacks(Square square, ulong occ) { return RookAttacks[RookOffsets[(int)square] + HashRook(square, occ)]; }
+    public static ulong GetQueenAttacks(Square square, ulong occ) { return GetBishopAttacks(square, occ) | GetRookAttacks(square, occ); }
 
 }

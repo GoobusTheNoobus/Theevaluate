@@ -1,2 +1,6 @@
 Theevaluate/bin
 Theevaluate/obj
+
+.vscode/*.json
+
+*.exe

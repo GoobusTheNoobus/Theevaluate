@@ -1,8 +1,8 @@
-using System.Reflection.Metadata;
+using Theevaluate.Core.Board;
 
 namespace Theevaluate.Core;
 
-public enum Square: byte
+public enum Square: byte 
 {
     A1, B1, C1, D1, E1, F1, G1, H1,
     A2, B2, C2, D2, E2, F2, G2, H2,
@@ -20,7 +20,7 @@ public enum Square: byte
 public enum File: sbyte { A, B, C, D, E, F, G, H, NB };
 public enum Rank: sbyte { R1, R2, R3, R4, R5, R6, R7, R8, NB};
 
-public enum Piece: byte
+public enum Piece: byte 
 {
     WPawn, WKnight, WBishop, WRook, WQueen, WKing,
     BPawn, BKnight, BBishop, BRook, BQueen, BKing,
@@ -31,21 +31,26 @@ public enum Piece: byte
 public enum Color: byte { White, Black, NB }
 public enum PieceType: byte { Pawn, Knight, Bishop, Rook, Queen, King }
 
-public class Castling
+public class Castling 
 {
     public static byte WhiteKingside  = 1;
     public static byte WhiteQueenside = 2;
     public static byte BlackKingside  = 4;
     public static byte BlackQueenside = 8;
+
+    public static ulong WhiteKingsideBetweenSquares = Bitboards.SquareMasks[(int)Square.F1] | Bitboards.SquareMasks[(int)Square.G1],
+                        WhiteQueensideBetweenSquares = Bitboards.SquareMasks[(int)Square.D1] | Bitboards.SquareMasks[(int)Square.C1] | Bitboards.SquareMasks[(int)Square.B1],
+                        BlackKingsideBetweenSquares = Bitboards.SquareMasks[(int)Square.F8] | Bitboards.SquareMasks[(int)Square.G8],
+                        BlackQueensideBetweenSquares = Bitboards.SquareMasks[(int)Square.D8] | Bitboards.SquareMasks[(int)Square.C8] | Bitboards.SquareMasks[(int)Square.B8];
 }
 
-public class TypeUtil
+public class TypeUtil 
 {
     public static File   FileOf(Square square) { return (File)((int)square & 7); }
     public static Rank   RankOf(Square square) { return (Rank)((int)square >> 3); }
     public static Square MakeSquare(Rank rank, File file) { return (Square)((int)rank << 3 | (int)file); }
 
-    public static Square MakeSquare(string str)
+    public static Square MakeSquare(string str) 
     {
         Rank rank = (Rank)(str[1] - '1');
         File file = (File)(str[0] - 'a');
@@ -56,6 +61,6 @@ public class TypeUtil
     public static Color     ColorOf(Piece piece) { return (Color)((int)piece / 6); }
     public static PieceType TypeOf(Piece piece) { return (PieceType)((int)piece % 6); }
     public static Piece     MakePiece(PieceType pieceType, Color color) { return (Piece)((int)color * 6 + (int)pieceType); }
-
-    
+  
+    public static Color Opposite(Color c) { return (Color)(((int)c + 1) & 1); }
 }
